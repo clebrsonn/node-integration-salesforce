@@ -1,0 +1,21 @@
+{
+  "name": "salesforce-integration-node",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "npx nodemon ./bin/www"
+  },
+  "dependencies": {
+    "axios": "^1.5.0",
+    "cookie-parser": "~1.4.4",
+    "debug": "~2.6.9",
+    "dotenv": "^16.3.1",
+    "ejs": "~2.6.1",
+    "express": "~4.16.1",
+    "http-errors": "~1.6.3",
+    "jsforce": "^1.11.1",
+    "morgan": "~1.9.1",
+    "node-salesforce-jwt": "^1.1.0",
+    "sqlite3": "^5.1.6"
+  }
+}
