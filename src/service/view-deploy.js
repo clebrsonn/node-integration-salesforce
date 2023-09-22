@@ -18,7 +18,7 @@ function deployAndMonitor(params) {
       });
 
       let callAgain= (error, result)=>{
-
+        console.log('result', result);
           if(error){
             console.error('O deploy falhou:');
             console.error(JSON.stringify(error));
@@ -29,7 +29,7 @@ function deployAndMonitor(params) {
           if(result && !result.done){
             console.log('em andamento',params.instance, result.status, id);
 
-            conn.metadata.checkDeployStatus(id, true, setInterval(callAgain, 50000));
+            conn.metadata.checkDeployStatus(id, true, callAgain);
           }else if (result && result?.status === 'Succeeded') {
 
             createComment(params.projectid, params.mrid, `${message} concluído com sucesso!`);
