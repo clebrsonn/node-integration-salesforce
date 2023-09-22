@@ -8,6 +8,7 @@ function deployAndMonitor(params) {
   try {
     let org = params.org;
     let id = params.jobid;
+    let message = params.isvalidate ? ' Validate ' : ' Deploy ';
 
       const conn = new jsforce.Connection();
 
@@ -17,8 +18,6 @@ function deployAndMonitor(params) {
       });
 
       let callAgain= (error, result)=>{
-          //console.log('error', error);
-          //console.log(result);
 
           if(error){
             console.error('O deploy falhou:');
@@ -32,14 +31,10 @@ function deployAndMonitor(params) {
 
             conn.metadata.checkDeployStatus(id, true, setInterval(callAgain, 50000));
           }else if (result && result?.status === 'Succeeded') {
-            createComment(params.projectid, params.mrid, 'Deploy concluído com sucesso!');
-            console.log('Deploy concluído com sucesso!', org);
+
+            createComment(params.projectid, params.mrid, `${message} concluído com sucesso!`);
           }else if(result && result?.status === 'Failed'){
-            console.error('O deploy falhou:');
-            createComment(params.projectid, params.mrid, `O deploy falhou: \n ${jsonArrayToMarkdownTable(result.details.componentFailures)}`);
-            console.error(jsonArrayToMarkdownTable(result.details.componentFailures));
-
-
+            createComment(params.projectid, params.mrid, `O ${message} falhou: \n ${jsonArrayToMarkdownTable(result.details.componentFailures)}`);
           }
         }
 

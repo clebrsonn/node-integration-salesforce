@@ -16,8 +16,7 @@ const createComment = async (projectId, mergeRequestId, status) => {
         },
       {
         headers: {
-          'Private-Token': gitlabToken,
-          'Content-Type': 'application/json'
+          'Private-Token': gitlabToken
 
         },
       }
