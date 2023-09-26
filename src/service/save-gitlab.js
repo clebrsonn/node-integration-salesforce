@@ -9,6 +9,9 @@ const gitlabToken = process.env.GITLAB_TOKEN; // Substitua pelo seu token de ace
 const createComment = async (projectId, mergeRequestId, status) => {
   try {
     // Cria o comentário na solicitação de merge especificada
+
+    console.log('status', status);
+
     const response = await axios.post(
       `${gitlabApiUrl}/projects/${projectId}/merge_requests/${mergeRequestId}/notes`,
         {
@@ -21,8 +24,8 @@ const createComment = async (projectId, mergeRequestId, status) => {
         },
       }
     );
+    console.info('comentario criado', projectId, mergeRequestId);
 
-    console.log('Comentário criado com sucesso:', response.data);
   } catch (error) {
     console.error('Erro ao criar o comentário:', error.message);
   }
