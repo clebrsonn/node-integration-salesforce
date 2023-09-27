@@ -1,6 +1,7 @@
 const axios = require('axios');
+require('dotenv').config();
 
-const hookURL = "https://accenture.webhook.office.com/webhookb2/1e68d3ce-f364-418e-873d-25a0dfb94e36@e0793d39-0939-496d-b129-198edd916feb/IncomingWebhook/b7b72c030d994e11b0f92adf9bb2ed8c/9bd3b8a9-24bc-44bd-8a1b-f983a009b404";
+const hookURL = process.env.HOOK_TEAMS;
 
 const message = {
     "type":"message",
@@ -15,7 +16,7 @@ const message = {
              "body":[
                  {
                  "type": "TextBlock",
-                 "text": "For Samples and Templates, see [https://adaptivecards.io/samples](https://adaptivecards.io/samples)"
+                 "text": ""
                  },
                  {
                     "type": "FactSet",

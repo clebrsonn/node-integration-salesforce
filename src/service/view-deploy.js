@@ -11,12 +11,12 @@ function deployAndMonitor(params) {
 
 const makeCall = (params, intervalId) => {
 
-  let id = params.jobid;
+  let id = params.jobId;
 
   const conn = new jsforce.Connection();
 
   conn.initialize({
-    instanceUrl: params.instance,
+    instanceUrl: params.instanceURL,
     accessToken: params.token
   });
 
@@ -39,7 +39,7 @@ const makeCall = (params, intervalId) => {
 const callAgain= (params, result, intervalId)=> {
   console.log(result);
   if (result && !result.done) {
-    console.log('em andamento', params.instance, result.status, id);
+    console.log('em andamento', params.instanceURL, result.status, params.jobId);
     return;
   } if (result) {
     let action = params.isvalidate ? ' Validate ' : ' Deploy ';
@@ -47,7 +47,7 @@ const callAgain= (params, result, intervalId)=> {
     let message = result?.status === 'Succeeded' ? `${action} concluído com sucesso!` :
     result?.status === 'Failed' ? `O ${action} falhou: \n ${jsonArrayToMarkdownTable(result.details.componentFailures)}`: '';
 
-    createComment(params.projectid, params.mrid, message);
+    createComment(params.projectId, params.mrId, message);
     notifyTeams();
   }
   if(result && result.done && intervalId){
@@ -56,7 +56,7 @@ const callAgain= (params, result, intervalId)=> {
   }
 
   Job.update({status : result.status}, {where:{
-      jobId: params.jobid
+      jobId: params.jobId
     }});
 }
 
@@ -77,6 +77,5 @@ function jsonArrayToMarkdownTable(jsonArray) {
 
   return markdownTable;
 }
-
 // Chamando a função para iniciar o deploy e monitorar
 module.exports = { deployAndMonitor };
