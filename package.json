@@ -15,7 +15,8 @@
     "http-errors": "~1.6.3",
     "jsforce": "^1.11.1",
     "morgan": "~1.9.1",
-    "node-salesforce-jwt": "^1.1.0",
+    "node-cron": "^3.0.2",
+    "sequelize": "^6.33.0",
     "sqlite3": "^5.1.6"
   }
 }

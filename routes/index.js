@@ -1,8 +1,8 @@
 var express = require('express');
 var router = express.Router();
-var save = require('../src/db/save');
+// var save = require('../src/db/save');
 var sf = require('../src/service/view-deploy');
-
+var Job = require('../src/models/Job')
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -13,15 +13,12 @@ router.get('/', function(req, res, next) {
 router.post('/', function(req, res, next) {
   console.log(JSON.stringify(req.body));
 
-  save.insert(req.body, reponseSuccess,res)
+  Job.create(req.body).then(response => {
+    sf.deployAndMonitor(response);
 
+    res.status(200).send({status: response.status,jobId: response.jobId});
+  }).catch(error => res.status(400).send(error.errors));
 });
-
-function reponseSuccess(params, res) {
-  console.log(params)
-  sf.deployAndMonitor(params);
-  return res.status(200).send(params);
-}
 
 
 module.exports = router;
