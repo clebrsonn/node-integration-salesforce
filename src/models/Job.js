@@ -25,7 +25,7 @@ const Job = database.define('job', {
 
     status:{
         type: DataTypes.STRING,
-        defaultValue: "InProgress"
+        defaultValue: "Waiting"
     }
 
 

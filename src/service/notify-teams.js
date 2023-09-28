@@ -1,8 +1,6 @@
 const axios = require('axios');
 require('dotenv').config();
-
 const hookURL = process.env.HOOK_TEAMS;
-
 const message = {
     "type":"message",
     "attachments":[

@@ -4,6 +4,7 @@ const { notifyTeams } = require('./notify-teams');
 const Job = require('../models/Job')
 
 function deployAndMonitor(params) {
+
   const intervalId= setInterval( ()=>makeCall(params, intervalId), 50000);
 
   makeCall(params, intervalId);
@@ -29,7 +30,13 @@ const makeCall = (params, intervalId) => {
       console.error(JSON.stringify(error));
       //  createComment(params.projectid, params.mrid, `O deploy falhou: ${JSON.stringify(error)}` );
       // notifyTeams();
-      callAgain(params, result, intervalId);
+      //callAgain(params, result, intervalId);
+
+      Job.update({status : "Error"}, {where:{
+        jobId: id
+      }});
+
+      clearInterval(intervalId);
 
     }
 
@@ -38,11 +45,15 @@ const makeCall = (params, intervalId) => {
 
 const callAgain= (params, result, intervalId)=> {
   console.log(result);
+  Job.update({status : result.status}, {where:{
+    jobId: params.jobId
+  }});
+
   if (result && !result.done) {
     console.log('em andamento', params.instanceURL, result.status, params.jobId);
     return;
   } if (result) {
-    let action = params.isvalidate ? ' Validate ' : ' Deploy ';
+    let action = result.checkOnly ? ' Validate ' : ' Deploy ';
 
     let message = result?.status === 'Succeeded' ? `${action} concluído com sucesso!` :
     result?.status === 'Failed' ? `O ${action} falhou: \n ${jsonArrayToMarkdownTable(result.details.componentFailures)}`: '';
@@ -54,10 +65,6 @@ const callAgain= (params, result, intervalId)=> {
 
     clearInterval(intervalId);
   }
-
-  Job.update({status : result.status}, {where:{
-      jobId: params.jobId
-    }});
 }
 
 function jsonArrayToMarkdownTable(jsonArray) {
