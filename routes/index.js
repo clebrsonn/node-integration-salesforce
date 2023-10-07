@@ -6,8 +6,8 @@ var Job = require('../src/models/Job')
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-
-  res.render('index', { title: 'Express' });
+  let registries= Job.findAll();
+  res.render('index', { title: 'Status', registries: registries });
 });
 
 router.post('/', function(req, res, next) {

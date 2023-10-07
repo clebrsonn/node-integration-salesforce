@@ -3,7 +3,6 @@ const Job = require('../models/Job');
 const sf = require('../service/view-deploy');
 const { Op } = require("sequelize");
 
-
 const schedule = ()=> {
     cron.schedule("*/10 * * * *", function () {
         Job.findAll({

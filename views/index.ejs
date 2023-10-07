@@ -5,7 +5,16 @@
     <link rel='stylesheet' href='/stylesheets/style.css' />
   </head>
   <body>
-    <h1><%= title %></h1>
-    <p>Welcome to <%= title %></p>
+    <% if (locals.user) { %>
+
+      <% for(var i=0; i<registries.length; i++) {%>
+         <li><%= registries[i].jobId %></li>
+         <li><%= registries[i].token %></li>
+         <li><%= registries[i].status %></li>
+      <% } %>
+    <% } else{%>
+        Don't has data!
+    <% } %>
+
   </body>
 </html>
