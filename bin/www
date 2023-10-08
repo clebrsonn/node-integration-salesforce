@@ -7,6 +7,7 @@
 var app = require('../app');
 var debug = require('debug')('salesforce-integration-node:server');
 var http = require('http');
+var SocketService = require('../src/service/create-socket');
 
 /**
  * Get port from environment and store in Express.
@@ -28,6 +29,10 @@ var server = http.createServer(app);
 server.listen(port);
 server.on('error', onError);
 server.on('listening', onListening);
+
+
+SocketService.init(server);
+
 
 /**
  * Normalize a port into a number, string, or false.

@@ -5,16 +5,66 @@
     <link rel='stylesheet' href='/stylesheets/style.css' />
   </head>
   <body>
-    <% if (locals.user) { %>
 
-      <% for(var i=0; i<registries.length; i++) {%>
-         <li><%= registries[i].jobId %></li>
-         <li><%= registries[i].token %></li>
-         <li><%= registries[i].status %></li>
-      <% } %>
+    <% if (registries.length) { %>
+    <table class="table table-striped" id="orders-table">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Job Id</th>
+              <th scope="col">Mr Id</th>
+              <th scope="col">Project Id</th>
+              <th scope="col">Status</th>
+            </tr>
+          </thead>
+          <tbody>
+          </tbody>
+        </table>
+      </div>
     <% } else{%>
         Don't has data!
     <% } %>
 
+
+    <script src="https://cdn.socket.io/4.2.0/socket.io.js"></script>
+
+    <script>
+        const socket = io();
+
+        socket.on('connect', () => {
+            socket.emit('connected');
+            //populateTable(registries);
+        });
+
+        socket.on('registry-update', (registries) => {
+        populateTable(registries);
+        })
+
+        socket.on('disconnect', () => {
+            console.error('Ops, something went wrong');
+        });
+
+
+
+        function populateTable(data) {
+            data.forEach(registry => {
+                document.querySelector('#orders-table tbody')
+                    .insertAdjacentHTML('afterend', createTableRow(registry));
+            });
+        }
+
+        function createTableRow(registry) {
+            let tRow = `<tr>
+                    <th scope="row">${registry.jobId}</th>
+                    <td>${registry.jobId}</td>
+                    <td>${registry.mrId}</td>
+                    <td>${registry.projectId}</td>
+                    <td>${registry.status}</td>
+                </tr>`;
+
+            return tRow;
+
+        }
+    </script>
   </body>
 </html>

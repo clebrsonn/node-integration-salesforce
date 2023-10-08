@@ -1,8 +1,9 @@
+const socket = require('./create-socket')
 const jsforce = require('jsforce');
 const { createComment } = require('./save-gitlab');
 const { notifyTeams } = require('./notify-teams');
-const Job = require('../models/Job')
 const jsonToMarkdown = require('json-to-markdown-table');
+const dbOperations = require('../db/operations');
 
 function deployAndMonitor(params) {
 
@@ -32,12 +33,11 @@ const makeCall = (params, intervalId) => {
       //  createComment(params.projectid, params.mrid, `O deploy falhou: ${JSON.stringify(error)}` );
       // notifyTeams();
       //callAgain(params, result, intervalId);
-
-      Job.update({status : "Error"}, {where:{
-        jobId: id
-      }});
-
       clearInterval(intervalId);
+
+      dbOperations.update({status : "Error"}, {where:{
+          jobId: id
+        }});
 
     }
 
@@ -46,7 +46,7 @@ const makeCall = (params, intervalId) => {
 
 const callAgain= (params, result, intervalId)=> {
   console.log(result);
-  Job.update({status : result.status}, {where:{
+  dbOperations.update({status : result.status}, {where:{
     jobId: params.jobId
   }});
 
