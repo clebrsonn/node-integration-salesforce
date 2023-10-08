@@ -6,7 +6,6 @@
   </head>
   <body>
 
-    <% if (registries.length) { %>
     <table class="table table-striped" id="orders-table">
           <thead>
             <tr>
@@ -21,10 +20,6 @@
           </tbody>
         </table>
       </div>
-    <% } else{%>
-        Don't has data!
-    <% } %>
-
 
     <script src="https://cdn.socket.io/4.2.0/socket.io.js"></script>
 
@@ -47,6 +42,7 @@
 
 
         function populateTable(data) {
+            document.querySelectorAll('#orders-table tbody').forEach(el => el.innerHTML= "");
             data.forEach(registry => {
                 document.querySelector('#orders-table tbody')
                     .insertAdjacentHTML('afterend', createTableRow(registry));
