@@ -9,7 +9,7 @@ function deployAndMonitor(params) {
 
   //const intervalId= setInterval( ()=>makeCall(params, intervalId), 50000);
 
-  makeCall(params, intervalId);
+  makeCall(params);
 }
 
 const makeCall = (params) => {
