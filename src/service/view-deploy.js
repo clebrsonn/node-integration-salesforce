@@ -7,12 +7,12 @@ const dbOperations = require('../db/operations');
 
 function deployAndMonitor(params) {
 
-  const intervalId= setInterval( ()=>makeCall(params, intervalId), 50000);
+  //const intervalId= setInterval( ()=>makeCall(params, intervalId), 50000);
 
   makeCall(params, intervalId);
 }
 
-const makeCall = (params, intervalId) => {
+const makeCall = (params) => {
 
   let id = params.jobId;
 
@@ -24,7 +24,7 @@ const makeCall = (params, intervalId) => {
   });
 
   conn.metadata.checkDeployStatus(id, true).then(result =>{
-    callAgain(params, result, intervalId);
+    callAgain(params, result);
   }).catch(error => {
 
     if (error.name !== 'sf:INVALID_SESSION_ID') {
@@ -32,8 +32,7 @@ const makeCall = (params, intervalId) => {
       console.error(JSON.stringify(error));
       //  createComment(params.projectid, params.mrid, `O deploy falhou: ${JSON.stringify(error)}` );
       // notifyTeams();
-      //callAgain(params, result, intervalId);
-      clearInterval(intervalId);
+      //callAgain(params, result);
 
       dbOperations.update({status : "Error"}, {where:{
           jobId: id
@@ -44,7 +43,7 @@ const makeCall = (params, intervalId) => {
   });
 }
 
-const callAgain= (params, result, intervalId)=> {
+const callAgain= (params, result)=> {
   console.log(result);
   dbOperations.update({status : result.status}, {where:{
     jobId: params.jobId
@@ -61,10 +60,6 @@ const callAgain= (params, result, intervalId)=> {
 
     createComment(params.projectId, params.mrId, message);
     notifyTeams();
-  }
-  if(result && result.done && intervalId){
-
-    clearInterval(intervalId);
   }
 }
 

@@ -8,7 +8,7 @@ const schedule = ()=> {
         dbOperations.findAll({
             where: {
                 status:{
-                    [Op.in]: ["Waiting", "Error"]
+                    [Op.notIn]: ["Succeeded","Failed"]
                 }
             }
         }).then(jobs => jobs.forEach(j => sf.deployAndMonitor(j)))
