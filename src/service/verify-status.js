@@ -4,7 +4,7 @@ const sf = require('../service/view-deploy');
 const { Op } = require("sequelize");
 
 const schedule = ()=> {
-    cron.schedule("*/10 * * * *", function () {
+    cron.schedule("*/3 * * * *", function () {
         dbOperations.findAll({
             where: {
                 status:{
