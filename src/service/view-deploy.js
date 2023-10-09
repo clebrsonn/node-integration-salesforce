@@ -34,11 +34,12 @@ const makeCall = (params) => {
       // notifyTeams();
       //callAgain(params, result);
 
-      dbOperations.update({status : "Error"}, {where:{
-          jobId: id
-        }});
 
     }
+    dbOperations.update({status : "Error"}, {where:{
+      jobId: id
+    }});
+
 
   });
 }
