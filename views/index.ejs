@@ -17,6 +17,15 @@
             </tr>
           </thead>
           <tbody>
+            <% registries.forEach(function(registry) { %>
+              <tr>
+                <th scope="row"><%registry.jobId%></th>
+                <td><% registry.jobId%></td>
+                <td><% registry.mrId%></td>
+                <td><% registry.projectId%></td>
+                <td><% registry.status%></td>
+            </tr>
+            <% }); %> 
           </tbody>
         </table>
       </div>
