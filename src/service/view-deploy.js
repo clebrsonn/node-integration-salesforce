@@ -1,4 +1,3 @@
-const socket = require('./create-socket')
 const jsforce = require('jsforce');
 const { createComment } = require('./save-gitlab');
 const { notifyTeams } = require('./notify-teams');

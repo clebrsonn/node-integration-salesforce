@@ -36,4 +36,22 @@ const createComment = async (jobId, projectId, mergeRequestId, status) => {
   }
 };
 
-module.exports = {createComment}
+const getMrAddress = async (projectId, mergeRequestId) => {
+  try {
+    // Cria o comentário na solicitação de merge especificada
+    return await axios.get(
+      `${gitlabApiUrl}/projects/${projectId}/merge_requests/${mergeRequestId}`,
+      {
+        headers: {
+          'Private-Token': gitlabToken
+
+        },
+      }
+    );
+
+  } catch (error) {
+    console.error('Erro ao criar o comentário:', error.message);
+  }
+};
+
+module.exports = {createComment, getMrAddress}
