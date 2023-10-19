@@ -16,8 +16,8 @@ function update(params, where) {
 
     });
 }
-function findAll(where) {
-    return Job.findAll(where);
+async function findAll(where) {
+    return await Job.findAll(where);
 }
 
 module.exports= {insert, update, findAll}
