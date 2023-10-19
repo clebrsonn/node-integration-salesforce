@@ -17,7 +17,13 @@ function update(params, where) {
     });
 }
 async function findAll(where) {
-    return await Job.findAll(where);
+    try{
+
+        return await Job.findAll(where);
+    }catch (e) {
+        console.log(e);
+    }
+
 }
 
 module.exports= {insert, update, findAll}
