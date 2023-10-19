@@ -17,8 +17,9 @@
     "json-to-markdown-table": "^1.0.0",
     "morgan": "~1.9.1",
     "node-cron": "^3.0.2",
+    "pg": "^8.11.3",
+    "pg-hstore": "^2.3.4",
     "sequelize": "^6.33.0",
-    "socket.io": "^4.7.2",
-    "sqlite3": "^5.1.6"
+    "socket.io": "^4.7.2"
   }
 }

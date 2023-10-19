@@ -10,14 +10,7 @@ function update(params, where) {
 
     Job.update(params,
         where).then( ()=> {
-            Job.findAll(//{
-            //     where: {
-            //         status:{
-            //             [Op.notIn]: ["Success", "Error"]
-            //         }
-            //     }
-            // }
-            ).then(result =>
+            Job.findAll().then(result =>
                 socket.getIO().emit('registry-update', result)
             );
 
