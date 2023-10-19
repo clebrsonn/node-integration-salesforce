@@ -22,12 +22,17 @@ const Job = database.define('job', {
     instanceURL: {
         type: DataTypes.STRING
     },
-
+    description: {
+        type: DataTypes.STRING
+    },
     status:{
         type: DataTypes.STRING,
         defaultValue: "Waiting"
+    },
+    commented:{
+        type: DataTypes.BOOLEAN,
+        defaultValue: false
     }
-
 
 })
 

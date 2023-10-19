@@ -11,9 +11,11 @@
             <tr>
               <th scope="col">#</th>
               <th scope="col">Job Id</th>
-              <th scope="col">Mr Id</th>
-              <th scope="col">Project Id</th>
+              <th scope="col">Go To Mr</th>
+              <th scope="col">Commented</th>
               <th scope="col">Status</th>
+              <th scope="col">Errors</th>
+              <th scope="col">Retry</th>
             </tr>
           </thead>
           <tbody>
@@ -22,8 +24,12 @@
                 <th scope="row"><%= registry.jobId %></th>
                 <td><%= registry.jobId %></td>
                 <td><%= registry.mrId %></td>
-                <td><%= registry.projectId %></td>
+                <td><input type="checkbox" id="scales" name="scales" <%= (registry.commented ? "checked" : null) %>  disabled></td>
                 <td><%= registry.status %></td>
+                <td><%= registry.description %></td>
+                <td><button value="<%= registry.jobId %>" onclick="retry(this.value)">Retry</button></td>
+
+
             </tr>
             <% }); %>
           </tbody>
@@ -37,7 +43,6 @@
 
         socket.on('connect', () => {
             socket.emit('connected');
-            //populateTable(registries);
         });
 
         socket.on('registry-update', (registries) => {
@@ -58,13 +63,33 @@
             });
         }
 
+        function retry(e){
+         let fetchData = {
+          method: 'POST',
+          body: JSON.stringify({jobId: e}),
+          headers: new Headers({
+            'Content-Type': 'application/json; charset=UTF-8'
+          })
+        }
+
+         fetch('/retry', fetchData)
+          .then((response) => {
+            return response.json();
+          })
+
+         return false;
+      }
+
         function createTableRow(registry) {
             let tRow = `<tr>
                     <th scope="row">${registry.jobId}</th>
                     <td>${registry.jobId}</td>
                     <td>${registry.mrId}</td>
-                    <td>${registry.projectId}</td>
+                    <td><input type="checkbox" id="scales" name="scales" ${registry.commented ? "checked" : null} %>  ></td>
                     <td>${registry.status}</td>
+                    <td>${registry.description}</td>
+                    <td><button value="${registry.jobId}"  onclick="retry(this.value)">Retry</button></td>
+
                 </tr>`;
 
             return tRow;

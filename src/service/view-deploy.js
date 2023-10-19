@@ -6,10 +6,7 @@ const jsonToMarkdown = require('json-to-markdown-table');
 const dbOperations = require('../db/operations');
 
 function deployAndMonitor(params) {
-
-  //const intervalId= setInterval( ()=>makeCall(params, intervalId), 50000);
-
-  makeCall(params);
+    makeCall(params);
 }
 
 const makeCall = (params) => {
@@ -30,13 +27,8 @@ const makeCall = (params) => {
     if (error.name !== 'sf:INVALID_SESSION_ID') {
       console.error('erro de conexão:');
       console.error(JSON.stringify(error));
-      //  createComment(params.projectid, params.mrid, `O deploy falhou: ${JSON.stringify(error)}` );
-      // notifyTeams();
-      //callAgain(params, result);
-
-
     }
-    dbOperations.update({status : "Error"}, {where:{
+    dbOperations.update({status : "Error", description: JSON.stringify(error) }, {where:{
       jobId: id
     }});
 
@@ -46,7 +38,7 @@ const makeCall = (params) => {
 
 const callAgain= (params, result)=> {
   console.log(result);
-  dbOperations.update({status : result.status}, {where:{
+  dbOperations.update({status : result.status, description: JSON.stringify(result.details?.componentFailures)}, {where:{
     jobId: params.jobId
   }});
 
@@ -59,11 +51,10 @@ const callAgain= (params, result)=> {
     let message = result?.status === 'Succeeded' ? `${action} concluído com sucesso!` :
     result?.status === 'Failed' ? `O ${action} falhou: \n ${transform(result.details.componentFailures)}`: '';
 
-    createComment(params.projectId, params.mrId, message);
+    createComment(params.jobId, params.projectId, params.mrId, message);
     notifyTeams();
   }
 }
-
 function transform(jsonToTransform) {
   let columns;
   if(Array.isArray(jsonToTransform)){
@@ -76,5 +67,4 @@ function transform(jsonToTransform) {
   return   jsonToMarkdown(jsonToTransform, columns);
 
 }
-// Chamando a função para iniciar o deploy e monitorar
 module.exports = { deployAndMonitor };

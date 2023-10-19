@@ -21,4 +21,23 @@ router.post('/', function(req, res, next) {
 });
 
 
+router.post('/retry', function(req, res, next) {
+  console.log(JSON.stringify(req.body.jobId));
+
+  dbOperations.findAll({
+    where: {
+        jobId:req.body.jobId
+    }
+  }).then(response =>{
+    if(response){
+      sf.deployAndMonitor(response[0]);
+    }
+
+    res.status(200).send();
+
+  }).catch(error => res.status(400).send(error.errors));
+
+});
+
+
 module.exports = router;
