@@ -9,12 +9,7 @@ function insert(params) {
 function update(params, where) {
 
     Job.update(params,
-        where).then( ()=> {
-            Job.findAll({order: [['createdAt', 'DESC']]}).then(result =>
-                socket.getIO().emit('registry-update', result)
-            );
-
-    });
+        where).then( ()=> socket.getIO().emit('registry-update'));
 }
 async function findAll(where) {
     try{

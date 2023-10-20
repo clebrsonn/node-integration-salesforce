@@ -3,6 +3,7 @@
   <head>
     <title><%= title %></title>
     <link rel='stylesheet' href='/stylesheets/style.css' />
+    <script src="https://cdn.socket.io/4.2.0/socket.io.js"></script>
   </head>
   <body>
 
@@ -36,7 +37,6 @@
         </table>
       </div>
 
-    <script src="https://cdn.socket.io/4.2.0/socket.io.js"></script>
 
     <script>
         const socket = io();
@@ -45,8 +45,8 @@
             socket.emit('connected');
         });
 
-        socket.on('registry-update', (registries) => {
-        populateTable(registries);
+        socket.on('registry-update', () => {
+          location.reload();
         })
 
         socket.on('disconnect', () => {
@@ -70,14 +70,6 @@
 
         }
 
-        function populateTable(data) {
-            document.querySelectorAll('#orders-table tbody').forEach(el => el.innerHTML= "");
-            data.forEach(registry => {
-                document.querySelector('#orders-table tbody')
-                    .insertAdjacentHTML('afterend', createTableRow(registry));
-            });
-        }
-
         function retry(e){
          let fetchData = {
           method: 'POST',
@@ -93,21 +85,7 @@
           })
       }
 
-        function createTableRow(registry) {
-            let tRow = `<tr>
-                    <th scope="row">${registry.jobId}</th>
-                    <td>${registry.jobId}</td>
-                    <td><a href="#"  onclick="goTo(this.id)" id="${registry.jobId}"> ${registry.mrId} </a></td>
-                    <td><input type="checkbox" id="scales" name="scales" ${registry.commented ? "checked" : null} %>  ></td>
-                    <td>${registry.status}</td>
-                    <td>${registry.description}</td>
-                    <td><button value="${registry.jobId}"  onclick="retry(this.value)">Retry</button></td>
 
-                </tr>`;
-
-            return tRow;
-
-        }
     </script>
   </body>
 </html>

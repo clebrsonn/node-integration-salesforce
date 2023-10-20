@@ -50,7 +50,7 @@ const callAgain= (params, result)=> {
     let action = result.checkOnly ? ' Validate ' : ' Deploy ';
 
     let message = result?.status === 'Succeeded' ? `${action} concluído com sucesso!` :
-    result?.status === 'Failed' ? `O ${action} falhou: \n ${transform(result.details.componentFailures)}`: '';
+                  result?.status === 'Failed'    ? `O ${action} falhou: \n ${transform(result.details.componentFailures)}`: '';
     if(!params.commented){
       createComment(params.jobId, params.projectId, params.mrId, message);
       notifyTeams();
