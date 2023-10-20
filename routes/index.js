@@ -29,7 +29,8 @@ router.post('/retry', function(req, res, next) {
   dbOperations.findAll({
     where: {
         jobId:req.body.jobId
-    }
+    },
+    order: [['createdAt', 'DESC']]
   }).then(response =>{
     if(response){
       sf.deployAndMonitor(response[0]);
@@ -47,7 +48,8 @@ router.post('/goto', function(req, res, next) {
   dbOperations.findAll({
     where: {
         jobId:req.body.jobId
-    }
+    },
+    order: [['createdAt', 'DESC']]
   }).then(response =>{
     if(response){
       getMrAddress(response[0].projectId, response[0].mrId).then(resp =>{
