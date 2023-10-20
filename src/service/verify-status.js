@@ -10,7 +10,8 @@ const schedule = ()=> {
                 status:{
                     [Op.notIn]: ["Succeeded","Failed"]
                 }
-            }
+            },
+            order: [['createdAt', 'DESC']]
         }).then(jobs => jobs.forEach(j => sf.deployAndMonitor(j)))
     });
 }
