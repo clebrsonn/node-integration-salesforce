@@ -51,9 +51,10 @@ const callAgain= (params, result)=> {
 
     let message = result?.status === 'Succeeded' ? `${action} concluído com sucesso!` :
     result?.status === 'Failed' ? `O ${action} falhou: \n ${transform(result.details.componentFailures)}`: '';
-
-    createComment(params.jobId, params.projectId, params.mrId, message);
-    notifyTeams();
+    if(!params.commented){
+      createComment(params.jobId, params.projectId, params.mrId, message);
+      notifyTeams();
+    }
   }
 }
 function transform(jsonToTransform) {

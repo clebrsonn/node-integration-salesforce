@@ -10,7 +10,7 @@ function update(params, where) {
 
     Job.update(params,
         where).then( ()=> {
-            Job.findAll().then(result =>
+            Job.findAll({order: [['createdAt', 'DESC']]}).then(result =>
                 socket.getIO().emit('registry-update', result)
             );
 

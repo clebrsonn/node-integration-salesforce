@@ -8,7 +8,7 @@ const { getMrAddress } = require('../src/service/save-gitlab');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  dbOperations.findAll().then(registries =>
+  dbOperations.findAll({order: [['createdAt', 'DESC']]}).then(registries =>
   res.render('index', { title: 'Status Validate', registries: registries }));
 });
 
