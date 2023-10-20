@@ -37,14 +37,9 @@ const makeCall = (params) => {
 
 const callAgain= (params, result)=> {
   console.log(result);
-  let columns;
-  if(Array.isArray(result.details?.componentFailures)){
-    columns = Object.keys(result.details?.componentFailures[0]);
-  }else{
-    columns= Object.keys(result.details?.componentFailures)
-  }
 
-  dbOperations.update({status : result.status, description: columns}, {where:{
+
+  dbOperations.update({status : result.status}, {where:{
     jobId: params.jobId
   }});
 
