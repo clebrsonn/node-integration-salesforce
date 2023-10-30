@@ -52,15 +52,17 @@ const callAgain= (params, result)=> {
     let message = result?.status === 'Succeeded' ? `${action} concluído com sucesso!` :
                   result?.status === 'Failed'    ? `O ${action} falhou: \n ${transform(result.details.componentFailures)}`: '';
 
-    // result.details.runTestResult.codeCoverageWarnings
+    // result.details.runTestResult.codeCoverage
     //
     // result.details.runTestResult.codeCoverageWarnings
 
     if(!params.commented){
-      if(result.success){
-        const covegare = result.details.runTestResult?.codeCoverageWarnings?.filter((elem) =>
-            result.details.componentSuccesses?.find(el => elem.name === el.fullName) );
+      if(result.success && result.details.runTestResult?.codeCoverageWarnings){
+        const covegare = result.details.runTestResult?.codeCoverageWarnings.filter((elem) =>
+        result.details.componentSuccesses?.find(el => elem.name === el.fullName) );
+
         message += transform(covegare);
+
       }
       createComment(params.jobId, params.projectId, params.mrId, message);
       notifyTeams();
