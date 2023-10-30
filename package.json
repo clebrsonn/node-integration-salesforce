@@ -23,6 +23,7 @@
     "socket.io": "^4.7.2"
   },
   "devDependencies": {
-    "sqlite3": "^5.1.6"
+    "sqlite3": "^5.1.6",
+    "@types/jsforce": "^1.11.1"
   }
 }
