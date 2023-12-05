@@ -31,8 +31,9 @@ const makeCall = (params) => {
       console.error(JSON.stringify(error));
     }
     console.error(JSON.stringify(error));
+      let messageError = JSON.stringify(error) ? JSON.stringify(error) : error;
 
-    dbOperations.update({status : "Error", description: JSON.stringify(error) }, {where:{
+    dbOperations.update({status : "Error", description: messageError }, {where:{
       jobId: id
     }});
 
