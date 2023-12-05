@@ -28,7 +28,7 @@ const makeCall = (params) => {
 
     if (error.name !== 'sf:INVALID_SESSION_ID') {
       console.error('erro de conexão:');
-      console.error(JSON.stringify(error));
+      console.error(error);
     }
     console.error(JSON.stringify(error));
       let messageError = JSON.stringify(error) ? JSON.stringify(error) : error;
