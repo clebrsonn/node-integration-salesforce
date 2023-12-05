@@ -30,6 +30,8 @@ const makeCall = (params) => {
       console.error('erro de conexão:');
       console.error(JSON.stringify(error));
     }
+    console.error(JSON.stringify(error));
+
     dbOperations.update({status : "Error", description: JSON.stringify(error) }, {where:{
       jobId: id
     }});
