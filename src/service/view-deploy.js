@@ -84,7 +84,7 @@ function transform(jsonToTransform) {
   if(jsonToTransform.runTestResult.codeCoverageWarnings){
     let coverage = jsonToTransform.runTestResult?.codeCoverageWarnings.filter((elem) =>
     jsonToTransform.componentSuccesses?.find(el => elem.name === el.fullName) );
-    if(coverage){
+    if(coverage?.length){
       str += '\n\r Coverage Test Class < 75% \n\r';
 
       str += toMarkdown(coverage);
