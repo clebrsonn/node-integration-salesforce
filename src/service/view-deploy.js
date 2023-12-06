@@ -105,8 +105,8 @@ function transform(jsonToTransform) {
       }
       if(coverageNew.length>0){
         str += '\n\r Coverage Test Class < 85% \n\r';
-
-        str += toMarkdown(coverageNew);
+        let columns = ['name', 'id', 'coveragePercent'];
+        str += jsonToMarkdown(coverageNew, columns);
       }
 
     }
