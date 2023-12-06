@@ -4,11 +4,14 @@ var router = express.Router();
 var sf = require('../src/service/view-deploy');
 var dbOperations = require('../src/db/operations');
 const { getMrAddress } = require('../src/service/save-gitlab');
+const { Op } = require("sequelize");
+const TODAY_START = new Date().setHours(0, 0, 0, 0);
+const NOW = new Date();
 
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  dbOperations.findAll({order: [['createdAt', 'DESC']]}).then(registries =>
+  dbOperations.findAll({where: {createdAt: {[Op.between]: [TODAY_START,NOW]}}, order: [['createdAt', 'DESC']]}).then(registries =>
   res.render('index', { title: 'Status Validate', registries: registries }));
 });
 
