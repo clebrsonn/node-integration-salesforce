@@ -31,8 +31,16 @@ const makeCall = (params) => {
       console.error(error);
     }
     console.error(JSON.stringify(error));
+    let errorMessage;
+    try{
+      JSON.parse(error);
+      errorMessage= JSON.stringify(error);
+    }catch(e){
+      errorMessage = error;
+    }
 
-    dbOperations.update({status : "Error", description: error }, {where:{
+
+    dbOperations.update({status : "Error", description: errorMessage }, {where:{
       jobId: id
     }});
 
@@ -78,7 +86,8 @@ function transform(jsonToTransform) {
   }
   if(jsonToTransform.runTestResult.failures){
     str += '\n\r Test Failures \n\r';
-    str+= toMarkdown(jsonToTransform.runTestResult.failures);
+    let columns = ['name', 'packageName', 'methodName', 'message', 'stackTrace'];
+    str+= jsonToMarkdown(jsonToTransform.runTestResult.failures, columns);
 
   }
   if(jsonToTransform.runTestResult.codeCoverageWarnings){
