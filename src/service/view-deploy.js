@@ -32,15 +32,14 @@ const makeCall = (params) => {
     }
     console.error(JSON.stringify(error));
 
-    try {
       dbOperations.update({status : "Error", description: error }, {where:{
         jobId: id
-      }});
-    } catch (e) {
-      dbOperations.update({status : "Error", description: JSON.stringify(error) }, {where:{
-        jobId: id
-      }});
-    }
+      }}).catch(e =>{
+        dbOperations.update({status : "Error", description: JSON.stringify(error) }, {where:{
+          jobId: id
+        }});
+      });
+
 
   });
 }
