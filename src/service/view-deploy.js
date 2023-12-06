@@ -31,15 +31,13 @@ const makeCall = (params) => {
       console.error(error);
     }
     console.error(JSON.stringify(error));
+    if(typeof error === "object"){
+      error = JSON.stringify(error);
+    }
 
-      dbOperations.update({status : "Error", description: error }, {where:{
-        jobId: id
-      }}).catch(e =>{
-        dbOperations.update({status : "Error", description: JSON.stringify(error) }, {where:{
-          jobId: id
-        }});
-      });
-
+    dbOperations.update({status : "Error", description: error }, {where:{
+      jobId: id
+    }});
 
   });
 }
