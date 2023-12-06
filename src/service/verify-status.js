@@ -8,7 +8,7 @@ const schedule = ()=> {
         dbOperations.findAll({
             where: {
                 status:{
-                    [Op.notIn]: ["Succeeded","Failed", "Cancelled"]
+                    [Op.notIn]: ["Succeeded","Failed", "Cancelled", "Error"]
                 }
             },
             order: [['createdAt', 'DESC']]
