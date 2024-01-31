@@ -85,7 +85,7 @@ function transform(jsonToTransform) {
 
   }
   if(jsonToTransform.runTestResult.codeCoverageWarnings){
-    let coverage = jsonToTransform.runTestResult?.codeCoverageWarnings.filter((elem) =>
+    let coverage = jsonToTransform.runTestResult?.codeCoverageWarnings?.filter((elem) =>
     jsonToTransform.componentSuccesses?.find(el => elem.name === el.fullName) );
     if(coverage?.length){
       str += '\n\r Coverage Test Class < 75% \n\r';
@@ -95,7 +95,7 @@ function transform(jsonToTransform) {
 
   }
   if(jsonToTransform.runTestResult.codeCoverage){
-    let coverage = jsonToTransform.runTestResult?.codeCoverage.filter((elem) =>
+    let coverage = jsonToTransform.runTestResult?.codeCoverage?.filter((elem) =>
     jsonToTransform.componentSuccesses?.find(el => elem.name === el.fullName) );
     if(coverage){
       let coverageNew=[];
