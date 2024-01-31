@@ -85,34 +85,40 @@ function transform(jsonToTransform) {
 
   }
   if(jsonToTransform.runTestResult.codeCoverageWarnings){
-    let coverage = jsonToTransform.runTestResult?.codeCoverageWarnings?.filter((elem) =>
-    jsonToTransform.componentSuccesses?.find(el => elem.name === el.fullName) );
-    if(coverage?.length){
-      str += '\n\r Coverage Test Class < 75% \n\r';
-
-      str += toMarkdown(coverage);
-    }
+      try{
+          
+        let coverage = jsonToTransform.runTestResult?.codeCoverageWarnings?.filter((elem) =>
+        jsonToTransform.componentSuccesses?.find(el => elem.name === el.fullName) );
+        if(coverage?.length){
+          str += '\n\r Coverage Test Class < 75% \n\r';
+    
+          str += toMarkdown(coverage);
+        }
+      }catch(e){}
 
   }
   if(jsonToTransform.runTestResult.codeCoverage){
-    let coverage = jsonToTransform.runTestResult?.codeCoverage?.filter((elem) =>
-    jsonToTransform.componentSuccesses?.find(el => elem.name === el.fullName) );
-    if(coverage){
-      let coverageNew=[];
-      for (let index = 0; index < coverage.length; index++) {
-        let element = coverage[index];
-        element['coveragePercent'] = ( 1- (parseInt(element.numLocationsNotCovered, 10) /parseInt(element.numLocations, 10)))* 100;
-        if(element['coveragePercent'] < process.env.COVERAGE){
-          coverageNew.push(element);
-        }
+      try{
+            let coverage = jsonToTransform.runTestResult?.codeCoverage?.filter((elem) =>
+            jsonToTransform.componentSuccesses?.find(el => elem.name === el.fullName) );
+            if(coverage){
+              let coverageNew=[];
+              for (let index = 0; index < coverage.length; index++) {
+                let element = coverage[index];
+                element['coveragePercent'] = ( 1- (parseInt(element.numLocationsNotCovered, 10) /parseInt(element.numLocations, 10)))* 100;
+                if(element['coveragePercent'] < process.env.COVERAGE){
+                  coverageNew.push(element);
+                }
+              }
+              if(coverageNew.length>0){
+                str += '\n\r Coverage Test Class < 85% \n\r';
+                let columns = ['id', 'name', 'coveragePercent'];
+                str += jsonToMarkdown(coverageNew, columns);
+              }
+        
+            }
+      }catch(e){
       }
-      if(coverageNew.length>0){
-        str += '\n\r Coverage Test Class < 85% \n\r';
-        let columns = ['id', 'name', 'coveragePercent'];
-        str += jsonToMarkdown(coverageNew, columns);
-      }
-
-    }
 
   }
   return str;
