@@ -10,9 +10,6 @@ const gitlabToken = process.env.GITLAB_TOKEN; // Substitua pelo seu token de ace
 const createComment = async (params, status) => {
   try {
     // Cria o comentário na solicitação de merge especificada
-
-    createComment(params.jobId, params.projectId, params.mrId, message);
-
     const {jobId, projectId, mrId, discussionId} = params;
     console.log('status', status);
     const URL = discussionId ? `${gitlabApiUrl}/projects/${projectId}/merge_requests/${mrId}/discussions/${discussionId}/notes`
@@ -31,7 +28,7 @@ const createComment = async (params, status) => {
       }
     );
     console.info('comentario criado', projectId, mrId);
-    dbOperations.update({commented : true, discussionId : response.id}, {where:{
+    dbOperations.update({commented : true, discussionId : response.data.id}, {where:{
       jobId: jobId
     }});
 
