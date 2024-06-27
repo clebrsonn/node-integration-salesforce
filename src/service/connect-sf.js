@@ -1,11 +1,15 @@
 const jsforce = require('jsforce');
 
-const conn = new jsforce.Connection();
+
+const conn = (params)=>{
+    const connection = new jsforce.Connection();
 
 
-conn.initialize({
-    instanceUrl: params.instanceURL,
-    accessToken: params.token
-});
+    connection.initialize({
+        instanceUrl: params.instanceURL,
+        accessToken: params.token
+    });
+    return connection;
+}
 
 module.exports= {conn}
