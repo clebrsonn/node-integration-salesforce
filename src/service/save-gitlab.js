@@ -14,7 +14,7 @@ const createComment = async (jobId, projectId, mergeRequestId, status) => {
     console.log('status', status);
 
     const response = await axios.post(
-      `${gitlabApiUrl}/projects/${projectId}/merge_requests/${mergeRequestId}/notes`,
+      `${gitlabApiUrl}/projects/${projectId}/merge_requests/${mergeRequestId}/discussions`,
         {
           body: status,
         },
