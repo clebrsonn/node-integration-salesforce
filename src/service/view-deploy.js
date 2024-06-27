@@ -13,9 +13,7 @@ const makeCall = (params) => {
 
   let id = params.jobId;
 
-  const conn = conn;
-
-  conn.metadata.checkDeployStatus(id, true).then(result =>{
+  conn(params).metadata.checkDeployStatus(id, true).then(result =>{
     callAgain(params, result);
   }).catch(error => {
 

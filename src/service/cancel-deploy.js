@@ -6,7 +6,7 @@ require('dotenv').config();
 cancelDeploy = (params) =>{
     let id = params.jobId;
     
-    conn.metadata.cancelDeploy(id, (err, result) => {
+    conn(params).metadata.cancelDeploy(id, (err, result) => {
         if (err) {
         return console.error('Erro ao cancelar o deploy: ', err);
         }
