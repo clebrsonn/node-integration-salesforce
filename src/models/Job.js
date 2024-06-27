@@ -32,6 +32,9 @@ const Job = database.define('job', {
     commented:{
         type: DataTypes.BOOLEAN,
         defaultValue: false
+    },
+    discussionId:{
+        type: DataTypes.STRING
     }
 
 })

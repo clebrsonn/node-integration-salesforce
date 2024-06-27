@@ -11,26 +11,25 @@
           <thead>
             <tr>
               <th scope="col">#</th>
-              <th scope="col">Job Id</th>
               <th scope="col">Go To Mr</th>
               <th scope="col">Commented</th>
               <th scope="col">Status</th>
               <th scope="col">Errors</th>
-              <th scope="col">Retry</th>
+              <th scope="col">Operations</th>
             </tr>
           </thead>
           <tbody>
-            <% registries.forEach(function(registry) { %>
+            <% registries?.forEach(function(registry) { %>
               <tr>
                 <th scope="row"><%= registry.jobId %></th>
-                <td><%= registry.jobId %></td>
                 <td><a href="#"  onclick="goTo(this.id)" id="<%= registry.jobId %>"><%= registry.mrId %></a></td>
                 <td><input type="checkbox" id="scales" name="scales" <%= (registry.commented ? "checked" : null) %>  disabled></td>
                 <td><%= registry.status %></td>
                 <td><%= registry.description %></td>
-                <td><button value="<%= registry.jobId %>" onclick="retry(this.value)">Retry</button></td>
-
-
+                <td>
+                  <button value="<%= registry.jobId %>" onclick="retry(this.value)">Retry</button>
+                  <button value="<%= registry.jobId %>" onclick="cancel(this.value)">Cancel</button>
+                </td>
             </tr>
             <% }); %>
           </tbody>
@@ -84,7 +83,21 @@
             return response.json();
           })
       }
+      
+      function cancel(e){
+        let fetchData = {
+         method: 'POST',
+         body: JSON.stringify({jobId: e}),
+         headers: new Headers({
+           'Content-Type': 'application/json; charset=UTF-8'
+         })
+       }
 
+        fetch('/retry', fetchData)
+         .then((response) => {
+           return response.json();
+         })
+     }
 
     </script>
   </body>

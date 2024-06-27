@@ -2,9 +2,11 @@ var express = require('express');
 var router = express.Router();
 // var save = require('../src/db/save');
 var sf = require('../src/service/view-deploy');
+
 var dbOperations = require('../src/db/operations');
 const { getMrAddress } = require('../src/service/save-gitlab');
 const { Op } = require("sequelize");
+const { cancelDeploy } = require('../src/service/cancel-deploy');
 const TODAY_START = new Date().setHours(0, 0, 0, 0);
 
 
@@ -44,6 +46,25 @@ router.post('/retry', function(req, res, next) {
 
 });
 
+router.post('/cancel', function(req, res, next) {
+  console.log(JSON.stringify(req.body.jobId));
+
+  dbOperations.findAll({
+    where: {
+        jobId:req.body.jobId
+    },
+    order: [['createdAt', 'DESC']]
+  }).then(response =>{
+    if(response){
+      cancelDeploy(response[0]);
+    }
+
+    res.status(200).send();
+
+  }).catch(error => res.status(400).send(error.errors));
+
+});
+
 router.post('/goto', function(req, res, next) {
   console.log(JSON.stringify(req.body.jobId));
 
@@ -60,9 +81,6 @@ router.post('/goto', function(req, res, next) {
     }else{
       res.status(200).send();
     }
-
-
-
   }).catch(error => res.status(400).send(error.errors));
 
 });
