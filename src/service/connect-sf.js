@@ -1,6 +1,9 @@
 const jsforce = require('jsforce');
 
-const conn = (params) => new jsforce.Connection().initialize({
+const conn = new jsforce.Connection();
+
+
+conn.initialize({
     instanceUrl: params.instanceURL,
     accessToken: params.token
 });
