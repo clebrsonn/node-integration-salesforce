@@ -8,7 +8,7 @@ function insert(params) {
 
 function update(params, where) {
 
-    Job.update(params,
+    return Job.update(params,
         where).then( ()=> socket.getIO().emit('registry-update'));
 }
 async function findAll(where) {

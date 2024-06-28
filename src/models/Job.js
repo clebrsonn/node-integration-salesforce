@@ -35,6 +35,10 @@ const Job = database.define('job', {
     },
     discussionId:{
         type: DataTypes.STRING
+    },
+    isMerged:{
+        type: DataTypes.BOOLEAN,
+        defaultValue: false
     }
 
 })

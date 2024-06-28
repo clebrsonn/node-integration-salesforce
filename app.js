@@ -1,6 +1,6 @@
 const database = require('./src/db/db');
 
-database.sync().then(result => console.log('connected Database'));
+database.sync({ alter: true }).then(result => console.log('connected Database'));
 
 var createError = require('http-errors');
 var express = require('express');
