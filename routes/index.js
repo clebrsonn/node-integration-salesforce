@@ -9,10 +9,9 @@ const { Op } = require("sequelize");
 const { cancelDeploy } = require('../src/service/cancel-deploy');
 const TODAY_START = new Date().setHours(0, 0, 0, 0);
 
-
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  dbOperations.findAll({where: {createdAt: {[Op.gte]: TODAY_START}}, order: [['createdAt', 'DESC']]}).then(registries =>
+  dbOperations.findAll({where: {isMerged : false}, order: [['createdAt', 'DESC']]}).then(registries =>
   res.render('index', { title: 'Status Validate', registries: registries }));
 });
 
@@ -26,6 +25,16 @@ router.post('/', function(req, res, next) {
   }).catch(error => res.status(400).send(error.errors));
 });
 
+
+router.post('/project/:projectid/mr/:id', function(req, res, next) {
+  console.log(JSON.stringify(req.params));
+  dbOperations.update({isMerged : true}, {where:{
+      [Op.and]: [{ mrId: req.params.id }, { projectId: req.params.projectid }]
+    }
+  }).then(response => {
+    res.status(200).send({status: response.status,jobId: response.jobId});
+  }).catch(error => res.status(400).send(error));
+});
 
 router.post('/retry', function(req, res, next) {
   console.log(JSON.stringify(req.body.jobId));

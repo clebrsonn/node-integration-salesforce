@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "start": "npx nodemon ./bin/www",
+    "dev": "npx nodemon ./bin/www",
+    "start": "node ./bin/www",
     "test": "jest"
   },
   "dependencies": {
