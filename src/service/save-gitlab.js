@@ -1,6 +1,7 @@
 const axios = require('axios');
 require('dotenv').config();
 const dbOperations = require('../db/operations');
+const { Op } = require('sequelize');
 
 const gitlabApiUrl = 'https://gitlab.com/api/v4'; // URL da API do GitLab
 
@@ -40,8 +41,7 @@ const createComment = async (params, status) => {
 
 const getMrAddress = async (projectId, mergeRequestId) => {
   try {
-    // Cria o comentário na solicitação de merge especificada
-    return await axios.get(
+    let response = await axios.get(
       `${gitlabApiUrl}/projects/${projectId}/merge_requests/${mergeRequestId}`,
       {
         headers: {
@@ -50,6 +50,12 @@ const getMrAddress = async (projectId, mergeRequestId) => {
         },
       }
     );
+    if(response.data.state!='opened'){
+      dbOperations.update({isMerged : true}, {where:{
+        [Op.and]: [{ mrId: mergeRequestId }, { projectId: projectId }]
+      }
+    })    }
+    return response;
 
   } catch (error) {
     console.error('Erro ao criar o comentário:', error.message);
