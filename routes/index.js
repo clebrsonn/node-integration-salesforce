@@ -28,6 +28,9 @@ router.post('/', function(req, res, next) {
 
 router.post('/project/:projectid/mr/:id', function(req, res, next) {
   console.log(JSON.stringify(req.params));
+  if(!req.params.id || !req.params.projectId){
+    res.status(400);
+  }
   dbOperations.update({isMerged : true}, {where:{
       [Op.and]: [{ mrId: req.params.id }, { projectId: req.params.projectid }]
     }
