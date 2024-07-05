@@ -3,7 +3,7 @@ var router = express.Router();
 // var save = require('../src/db/save');
 var sf = require('../src/service/view-deploy');
 
-var dbOperations = require('../src/db/operations');
+var dbOperations = require('../src/db/jobsRepository');
 const { getMrAddress } = require('../src/service/save-gitlab');
 const { Op } = require("sequelize");
 const { cancelDeploy } = require('../src/service/cancel-deploy');
@@ -21,7 +21,7 @@ router.post('/', function(req, res, next) {
   dbOperations.insert(req.body).then(response => {
     sf.deployAndMonitor(response);
 
-    res.status(200).send({status: response.status,jobId: response.jobId});
+    res.status(201).send({status: response.status,jobId: response.jobId});
   }).catch(error => res.status(400).send(error.errors));
 });
 
@@ -92,6 +92,32 @@ router.post('/goto', function(req, res, next) {
     }
   }).catch(error => res.status(400).send(error.errors));
 
+});
+
+// Updated Login route
+router.post("/login", async (req, res) => {
+  const { username, password, role } = req.body;
+  try {
+    const user = await User.findOne({ username });
+
+    if (!user) {
+      return res.status(401).json({ message: "Invalid username or password" });
+    }
+    if (user.password !== password) {
+      return res.status(401).json({ message: 'Invalid username or password' });
+    }
+    if (user.role !== role) {
+      return res.status(401).json({ message: 'Invalid role' });
+    }
+    // Generate JWT token
+    const token = jwt.sign(
+      { id: user._id, username: user.username, role: user.role},
+      process.env.JWT_SECRET
+    );
+    res.json({ token });
+  } catch (error) {
+    res.status(500).json({ message: "Internal server error" });
+  }
 });
 
 

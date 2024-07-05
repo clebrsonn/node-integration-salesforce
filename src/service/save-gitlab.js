@@ -1,6 +1,6 @@
 const axios = require('axios');
 require('dotenv').config();
-const dbOperations = require('../db/operations');
+const  JobRepository = require('../db/jobsRepository');
 
 const gitlabApiUrl = 'https://gitlab.com/api/v4'; // URL da API do GitLab
 
@@ -28,7 +28,7 @@ const createComment = async (params, status) => {
       }
     );
     console.info('comentario criado', projectId, mrId);
-    dbOperations.update({commented : true, discussionId : response.data.id}, {where:{
+    JobRepository.update({commented : true, discussionId : response.data.id}, {where:{
       jobId: jobId
     }});
 
