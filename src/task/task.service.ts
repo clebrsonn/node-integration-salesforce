@@ -13,7 +13,7 @@ export class TasksService {
     private readonly sfService: SfService,
   ) {}
 
-  @Cron('* * * * *')
+  @Cron('*/3 * * * *')
   handleCron() {
     this.jobsService
       .find({
