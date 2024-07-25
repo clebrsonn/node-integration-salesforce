@@ -19,7 +19,7 @@ import { AuthConfigModule } from './auth-config/auth-config.module';
     TypeOrmModule.forRoot({
       type: 'postgres',
       //type: 'sqlite',
-      database: process.env.DB_ACCESS,
+      url: process.env.DB_ACCESS,
       // host: 'localhost',
       // port: 5432,
       // password: 'simform',
