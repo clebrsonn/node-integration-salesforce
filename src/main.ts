@@ -25,29 +25,6 @@ async function bootstrap() {
   app.setBaseViewsDir(join(__dirname, '..', 'views'));
   app.engine('.hbs', exphbs.engine({ extname: '.hbs', defaultLayout: 'main' }));
   app.setViewEngine('hbs');
-  var hbs = require('hbs');
-
-
-    hbs.registerHelper('statusClass', function(status) {
-  
-    switch (status) {
-  
-      case 'InProgress':
-  
-        return 'table-primary';
-  
-      case 'Failed':
-  
-        return 'table-danger';
-  
-      case 'Succeeded':
-  
-        return 'table-success';
-  
-      default:
-  
-        return 'table-warning';
-    }  });
 
   app.use(
     session({
