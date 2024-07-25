@@ -25,10 +25,7 @@
       </thead>
       <tbody>
         {{#each jobs}}
-        <tr class="{{this.status === 'InProgress' ? 'table-primary' :      
-                        this.status === 'Failed' ? 'table-danger' :
-                        this.status === 'Succeeded' ? 'table-success' : 'table-warning'}}"
-          >
+        <tr class="{{statusClass this.status}}">
           <th scope="row">{{this.jobId}}</th>
           <td><a href="#" onclick="goTo(this.id)" id="{{this.jobId}}">{{ this.mrId }}</a></td>
           <td><input type="checkbox" id="scales" name="scales" value="{{ this.commented }}" disabled></td>
@@ -52,6 +49,31 @@
   <!-- Adiciona seu script para lidar com as requisições -->
  
     <script>
+  Handlebars.registerHelper('statusClass', function(status) {
+  
+    switch (status) {
+  
+      case 'InProgress':
+  
+        return 'table-primary';
+  
+      case 'Failed':
+  
+        return 'table-danger';
+  
+      case 'Succeeded':
+  
+        return 'table-success';
+  
+      default:
+  
+        return 'table-warning';
+  
+    }
+  
+  });
+
+ 
         const socket = io();
 
         socket.on('connect', () => {
