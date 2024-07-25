@@ -25,7 +25,10 @@
       </thead>
       <tbody>
         {{#each jobs}}
-        <tr>
+        <tr class="{{this.status === 'InProgress' ? 'table-primary' :      
+                        this.status === 'Failed' ? 'table-danger' :
+                        this.status === 'Succeeded' ? 'table-success' : 'table-warning'}}"
+          >
           <th scope="row">{{this.jobId}}</th>
           <td><a href="#" onclick="goTo(this.id)" id="{{this.jobId}}">{{ this.mrId }}</a></td>
           <td><input type="checkbox" id="scales" name="scales" value="{{ this.commented }}" disabled></td>
