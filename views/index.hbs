@@ -48,32 +48,7 @@
 
   <!-- Adiciona seu script para lidar com as requisições -->
  
-    <script>
-  Handlebars.registerHelper('statusClass', function(status) {
-  
-    switch (status) {
-  
-      case 'InProgress':
-  
-        return 'table-primary';
-  
-      case 'Failed':
-  
-        return 'table-danger';
-  
-      case 'Succeeded':
-  
-        return 'table-success';
-  
-      default:
-  
-        return 'table-warning';
-  
-    }
-  
-  });
-
- 
+    <script> 
         const socket = io();
 
         socket.on('connect', () => {
