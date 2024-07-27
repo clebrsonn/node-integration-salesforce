@@ -49,20 +49,6 @@
   <!-- Adiciona seu script para lidar com as requisições -->
  
     <script>
-        const socket = io();
-
-        socket.on('connect', () => {
-            socket.emit('connected');
-        });
-
-        socket.on('registry-update', () => {
-          location.reload();
-        })
-
-        socket.on('disconnect', () => {
-            console.error('Ops, something went wrong');
-        });
-
         function goTo(e){
           let fetchData = {
             method: 'POST',
@@ -83,13 +69,12 @@
         function retry(e){
          let fetchData = {
           method: 'POST',
-          body: JSON.stringify({jobId: e}),
           headers: new Headers({
             'Content-Type': 'application/json; charset=UTF-8'
           })
         }
 
-         fetch('/jobs/retry', fetchData)
+         fetch(`/jobs/retry/${e}`, fetchData)
           .then((response) => {
             return response.json();
           })
