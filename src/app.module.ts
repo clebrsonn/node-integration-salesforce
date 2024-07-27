@@ -17,9 +17,9 @@ import { AuthConfigModule } from './auth-config/auth-config.module';
     ConfigModule.forRoot({ isGlobal: true }),
     ScheduleModule.forRoot(),
     TypeOrmModule.forRoot({
-      //type: 'postgres',
-      type: 'sqlite',
-      database: process.env.DB_ACCESS,
+      type: 'postgres',
+      //type: 'sqlite',
+      url: process.env.DB_ACCESS,
       // host: 'localhost',
       // port: 5432,
       // password: 'simform',
