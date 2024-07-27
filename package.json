@@ -28,9 +28,11 @@
     "@nestjs/mapped-types": "*",
     "@nestjs/passport": "^10.0.3",
     "@nestjs/platform-express": "^10.0.0",
+    "@nestjs/platform-socket.io": "^10.3.10",
     "@nestjs/schedule": "^4.1.0",
     "@nestjs/swagger": "^7.4.0",
     "@nestjs/typeorm": "^10.0.2",
+    "@nestjs/websockets": "^10.3.10",
     "axios": "^1.7.2",
     "bcrypt": "^5.1.1",
     "class-transformer": "^0.5.1",
@@ -45,7 +47,7 @@
     "pg": "^8.12.0",
     "reflect-metadata": "^0.2.0",
     "rxjs": "^7.8.1",
-    "tablemark": "^3.1.0",
+    "socket.io": "^4.7.5",
     "typeorm": "^0.3.20"
   },
   "devDependencies": {

@@ -7,6 +7,6 @@ import { GitlabModule } from 'src/gitlab/gitlab.module';
 @Module({
   imports: [forwardRef(() => JobsModule), HttpModule, GitlabModule],
   providers: [SfService],
-  exports: [SfService]
+  exports: [SfService],
 })
 export class SfModule {}

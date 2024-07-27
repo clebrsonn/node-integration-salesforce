@@ -7,7 +7,7 @@ import {
 import { CreateJobDto } from './dto/create-job.dto';
 import { UpdateJobDto } from './dto/update-job.dto';
 import { Job } from './entities/job.entity';
-import { FindManyOptions, FindOptions, Repository } from 'typeorm';
+import { FindManyOptions, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { SfService } from 'src/sf/sf.service';
 
@@ -43,14 +43,14 @@ export class JobsService {
     return this.jobRepository.findOneBy({ jobId: jobId });
   }
 
-  update(id: string, updateJobDto: UpdateJobDto) {
+  async update(id: string, updateJobDto: UpdateJobDto) {
     const job = new Job();
-    console.log('updateJobDto', updateJobDto);
     job.status = updateJobDto.status;
     job.description = updateJobDto.description;
     job.jobId = id;
-    console.log(job);
-    return this.jobRepository.save(job);
+    const jobUpdated = await this.jobRepository.save(job);
+
+    return jobUpdated;
   }
 
   changeMerged(mrId: number, projectID: number) {
@@ -60,7 +60,7 @@ export class JobsService {
     );
   }
 
-  async verifyStatus(jobId: string){
+  async verifyStatus(jobId: string) {
     return this.sfService.deployAndMonitor(await this.findOne(jobId));
   }
 

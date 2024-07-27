@@ -24,7 +24,7 @@ export class AuthService {
   async signIn(
     username: string,
     pass: string,
-  ): Promise<{ access_token: string}> {
+  ): Promise<{ access_token: string }> {
     const user: User = await this.validateUser(username);
     if (!compareSync(pass, user.password)) {
       throw new UnauthorizedException();
@@ -34,7 +34,7 @@ export class AuthService {
       access_token: await this.jwtService.signAsync(
         payload,
         this.authConfig.accessTokenConfig,
-      )
+      ),
     };
   }
 }

@@ -6,5 +6,4 @@ export class LoginGuard extends AuthGuard('jwt') {
   constructor() {
     super();
   }
-
 }

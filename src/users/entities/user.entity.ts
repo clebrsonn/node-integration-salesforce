@@ -5,7 +5,6 @@ export class User {
   @PrimaryColumn()
   username: string;
 
-
   @Column({ type: 'varchar', length: 30 })
   name: string;
 

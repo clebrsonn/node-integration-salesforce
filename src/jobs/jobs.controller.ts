@@ -40,10 +40,9 @@ export class JobsController {
   }
 
   @Post('retry/:id')
-  verifyStatus(@Param('id') jobId: string){
+  verifyStatus(@Param('id') jobId: string) {
     return this.jobsService.verifyStatus(jobId);
   }
-
 
   @Get('project/:projectid/mr/:id')
   changeMerge(

@@ -6,5 +6,4 @@ export class UpdateJobDto extends PartialType(CreateJobDto) {
   description!: string;
   commented!: boolean;
   discussionId!: string;
-
 }

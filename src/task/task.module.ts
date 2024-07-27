@@ -6,7 +6,6 @@ import { SfModule } from 'src/sf/sf.module';
 @Module({
   imports: [JobsModule, SfModule],
   providers: [TasksService],
-  exports: [TasksService]
-
+  exports: [TasksService],
 })
 export class TaskModule {}

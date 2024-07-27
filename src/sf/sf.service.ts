@@ -86,7 +86,6 @@ export class SfService {
         const dto = new UpdateJobDto();
         dto.status = 'Error';
         dto.description = errorMsg;
-        console.log('dto', dto);
 
         this.jobsService.update(id, dto);
       });

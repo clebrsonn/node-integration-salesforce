@@ -39,5 +39,4 @@ export class AuthController {
     res.cookie('user_token', '', { expires: new Date(Date.now()) });
     return {};
   }
-
 }

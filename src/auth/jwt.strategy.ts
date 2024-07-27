@@ -5,12 +5,11 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { Request as RequestType } from 'express';
 import { AuthConfig } from 'src/auth-config/auth-config';
 
-
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
   constructor(
     private readonly authService: AuthService,
-    private readonly authConfig: AuthConfig
+    private readonly authConfig: AuthConfig,
   ) {
     super({
       jwtFromRequest: ExtractJwt.fromExtractors([
@@ -30,12 +29,10 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       'user_token' in req.cookie &&
       req.cookie.user_token.length > 0
     ) {
-
       return req.cookie.user_token;
     }
     return null;
   }
-
 
   async validate(token: any): Promise<any> {
     const user = await this.authService.validateUser(token.username);
