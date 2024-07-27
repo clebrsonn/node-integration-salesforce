@@ -13,6 +13,7 @@ import { GitlabService } from 'src/gitlab/gitlab.service';
 import { UpdateJobDto } from 'src/jobs/dto/update-job.dto';
 import { Job } from 'src/jobs/entities/job.entity';
 import { JobsService } from 'src/jobs/jobs.service';
+import { TablemarkOptions } from 'tablemark';
 
 @Injectable()
 export class SfService {
@@ -34,13 +35,15 @@ export class SfService {
     return connection;
   }
 
-  async getTablemark(): Promise<any> {
+  async getTablemark(
+    toTransform: any,
+    options: TablemarkOptions,
+  ): Promise<any> {
     if (typeof this.tablemark !== 'undefined') return this.tablemark;
     const mod = await (eval(`import('tablemark')`) as Promise<
       typeof import('tablemark')
     >);
-    this.tablemark = mod;
-    return this.tablemark;
+    return mod.default(toTransform, options);
   }
 
   deployAndMonitor(params: Job) {
@@ -135,11 +138,17 @@ export class SfService {
       return '';
     }
     let str = '';
-    if (jsonToTransform.componentFailures) {
+    if (
+      jsonToTransform.componentFailures &&
+      jsonToTransform.componentFailures.length > 0
+    ) {
       str += '\n\r Component Failures \n\r';
-      str += this.toMarkdown(jsonToTransform.componentFailures);
+      str += this.convertJsonToMarkdownTable(jsonToTransform.componentFailures);
     }
-    if (jsonToTransform.runTestResult?.failures) {
+    if (
+      jsonToTransform.runTestResult?.failures &&
+      jsonToTransform.runTestResult?.failures.length > 0
+    ) {
       str += '\n\r Test Failures \n\r';
       const columns = [
         'name',
@@ -148,8 +157,9 @@ export class SfService {
         'message',
         'stackTrace',
       ];
-      str += this.tablemark.then((a) =>
-        a(jsonToTransform.runTestResult.failures, { columns: columns }),
+      str += this.convertJsonToMarkdownTable(
+        jsonToTransform.runTestResult.failures,
+        columns,
       );
     }
     if (jsonToTransform.runTestResult?.codeCoverageWarnings) {
@@ -164,7 +174,7 @@ export class SfService {
         if (coverage?.length) {
           str += '\n\r Coverage Test Class < 75% \n\r';
 
-          str += this.toMarkdown(coverage);
+          str += this.convertJsonToMarkdownTable(coverage);
         }
       } catch (e) {}
     }
@@ -192,9 +202,7 @@ export class SfService {
           if (coverageNew.length > 0) {
             str += `\n\r Coverage Test Class < ${process.env.COVERAGE || 85}% \n\r`;
             const columns = ['id', 'name', 'coveragePercent'];
-            str += this.tablemark.then((a) =>
-              a(coverageNew, { columns: columns }),
-            );
+            str += this.convertJsonToMarkdownTable(coverageNew, columns);
           }
         }
       } catch (e) {}
@@ -202,14 +210,23 @@ export class SfService {
     return str;
   }
 
-  private toMarkdown(jsonToTransform) {
-    let columns: string[];
-
-    if (Array.isArray(jsonToTransform)) {
-      columns = Object.keys(jsonToTransform[0]);
-    } else {
-      columns = Object.keys(jsonToTransform);
+  convertJsonToMarkdownTable(json: any[], columns?: string[]): string {
+    if (json.length === 0) {
+      return '';
     }
-    return this.tablemark.then((a) => a(jsonToTransform, { columns: columns }));
+
+    const headers =
+      columns && columns.length > 0 ? columns : Object.keys(json[0]);
+    const tableHeaders = `| ${headers.join(' | ')} |`;
+    const tableSeparators = `| ${headers.map(() => '---').join(' | ')} |`;
+
+    const tableRows = json.map((row) => {
+      const values = headers.map((header) =>
+        row[header] !== undefined ? row[header] : '',
+      );
+      return `| ${values.join(' | ')} |`;
+    });
+
+    return [tableHeaders, tableSeparators, ...tableRows].join('\n');
   }
 }

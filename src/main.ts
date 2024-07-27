@@ -12,6 +12,7 @@ import flash = require('connect-flash');
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
   app.useGlobalPipes(new ValidationPipe());
+
   const config = new DocumentBuilder()
     .setTitle('Integration with Salesforce')
     .setDescription('The API description')
@@ -21,9 +22,32 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
 
+  app.engine(
+    'hbs',
+    exphbs.create({
+      extname: 'hbs',
+      defaultLayout: 'main',
+      layoutsDir: join(__dirname, '..', 'views', 'layouts'),
+      partialsDir: join(__dirname, '..', 'views', 'layouts'),
+      helpers: {
+        statusClass: function (status: string) {
+          switch (status) {
+            case 'InProgress':
+              return 'table-primary';
+            case 'Failed':
+              return 'table-danger';
+            case 'Succeeded':
+              return 'table-success';
+            default:
+              return 'table-warning';
+          }
+        },
+      },
+    }).engine,
+  );
+
   app.useStaticAssets(join(__dirname, '..', 'public'));
-  app.setBaseViewsDir(join(__dirname, '..', 'views'));
-  app.engine('.hbs', exphbs.engine({ extname: '.hbs', defaultLayout: 'main' }));
+  // app.setBaseViewsDir(join(__dirname, '..', 'views'));
   app.setViewEngine('hbs');
 
   app.use(

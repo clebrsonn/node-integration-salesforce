@@ -60,6 +60,10 @@ export class JobsService {
     );
   }
 
+  async verifyStatus(jobId: string){
+    return this.sfService.deployAndMonitor(await this.findOne(jobId));
+  }
+
   async cancel(jobId: string) {
     const job = await this.findOne(jobId);
     if (!job) {

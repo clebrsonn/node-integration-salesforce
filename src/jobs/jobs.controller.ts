@@ -39,13 +39,14 @@ export class JobsController {
     return this.jobsService.update(id, updateJobDto);
   }
 
-  // @Delete(':id')
-  // remove(@Param('id') id: string) {
-  //   return this.jobsService.remove(+id);
-  // }
+  @Post('retry/:id')
+  verifyStatus(@Param('id') jobId: string){
+    return this.jobsService.verifyStatus(jobId);
+  }
+
 
   @Get('project/:projectid/mr/:id')
-  changeTMerge(
+  changeMerge(
     @Param('projectid') projectId: number,
     @Param('id') mrId: number,
   ) {
