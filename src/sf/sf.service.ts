@@ -13,11 +13,9 @@ import { GitlabService } from 'src/gitlab/gitlab.service';
 import { UpdateJobDto } from 'src/jobs/dto/update-job.dto';
 import { Job } from 'src/jobs/entities/job.entity';
 import { JobsService } from 'src/jobs/jobs.service';
-import { TablemarkOptions } from 'tablemark';
 
 @Injectable()
 export class SfService {
-  declare tablemark: any;
   private readonly logger = new Logger(SfService.name);
 
   constructor(
@@ -33,17 +31,6 @@ export class SfService {
       accessToken: token,
     });
     return connection;
-  }
-
-  async getTablemark(
-    toTransform: any,
-    options: TablemarkOptions,
-  ): Promise<any> {
-    if (typeof this.tablemark !== 'undefined') return this.tablemark;
-    const mod = await (eval(`import('tablemark')`) as Promise<
-      typeof import('tablemark')
-    >);
-    return mod.default(toTransform, options);
   }
 
   deployAndMonitor(params: Job) {
@@ -109,7 +96,6 @@ export class SfService {
     console.log(result);
     const dto = new UpdateJobDto();
     dto.status = result.status;
-    console.log('dto', dto);
     this.jobsService.update(params.jobId, dto);
 
     if (result && !result.done) {
@@ -176,7 +162,12 @@ export class SfService {
 
           str += this.convertJsonToMarkdownTable(coverage);
         }
-      } catch (e) {}
+      } catch (e) {
+        this.logger.error(
+          'error when convertJsonToMarkdownTable',
+          e.stackTrace,
+        );
+      }
     }
     if (jsonToTransform.runTestResult?.codeCoverage) {
       try {
