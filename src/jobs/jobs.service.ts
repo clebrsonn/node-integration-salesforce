@@ -10,6 +10,7 @@ import { Job } from './entities/job.entity';
 import { FindManyOptions, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { SfService } from 'src/sf/sf.service';
+import { SocketGateway } from 'src/socket/socket.gateway';
 
 @Injectable()
 export class JobsService {
@@ -17,6 +18,7 @@ export class JobsService {
     @InjectRepository(Job) private readonly jobRepository: Repository<Job>,
     @Inject(forwardRef(() => SfService))
     private readonly sfService: SfService,
+    private readonly socketService: SocketGateway
   ) {}
 
   async create(createJobDto: CreateJobDto) {
@@ -49,6 +51,7 @@ export class JobsService {
     job.description = updateJobDto.description;
     job.jobId = id;
     const jobUpdated = await this.jobRepository.save(job);
+    this.socketService.sendEventUpdate('job-updated', null);
 
     return jobUpdated;
   }

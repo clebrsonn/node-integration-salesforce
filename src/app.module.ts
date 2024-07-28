@@ -11,6 +11,7 @@ import { GitlabModule } from './gitlab/gitlab.module';
 import { ScheduleModule } from '@nestjs/schedule';
 import { TaskModule } from './task/task.module';
 import { AuthConfigModule } from './auth-config/auth-config.module';
+import { SocketModule } from './socket/socket.module';
 
 @Module({
   imports: [
@@ -37,6 +38,7 @@ import { AuthConfigModule } from './auth-config/auth-config.module';
     GitlabModule,
     TaskModule,
     AuthConfigModule,
+    SocketModule,
   ],
   controllers: [AppController],
   providers: [AppService],
