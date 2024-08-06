@@ -55,7 +55,7 @@ export class JobsController {
     return this.jobsService.changeMerged(mrId, projectId);
   }
 
-  @UseGuards(LoginGuard)
+  //@UseGuards(LoginGuard)
   @Post('cancel/:id')
   cancel(@Param('id') jobId: string) {
     return this.jobsService.cancel(jobId);
