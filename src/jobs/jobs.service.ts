@@ -49,6 +49,7 @@ export class JobsService {
     const job = new Job();
     job.status = updateJobDto.status;
     job.description = updateJobDto.description;
+    job.commented=updateJobDto.commented
     job.jobId = id;
     const jobUpdated = await this.jobRepository.save(job);
     this.socketService.sendEventUpdate('job-updated', null);
