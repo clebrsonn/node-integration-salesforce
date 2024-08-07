@@ -31,7 +31,7 @@
           <td><a href="#" onclick="goTo(this.id)" id="{{this.jobId}}">{{ this.mrId }}</a></td>
           <td class="align-middle">
             <div class="form-check form-switch"><input class="form-check-input" type="checkbox" name="commented"
-                value="{{ this.commented }}" disabled></div>
+                value="{{ this.commented }}" disabled {{#if this.commented}} checked {{/if}}></div>
           </td>
           <td>{{ this.status }}</td>
           <td>{{ this.description }}</td>
