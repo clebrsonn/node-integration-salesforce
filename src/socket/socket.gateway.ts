@@ -16,15 +16,13 @@ export class SocketGateway implements OnGatewayConnection, OnGatewayDisconnect {
   handleConnection(client: Socket, ...args: any[]) {
     console.log('Client connected:', client.id);
     client.emit('message', 'Welcome to the WebSocket server!');
-
   }
 
   async handleDisconnect(socket: Socket) {
     console.log('Client disconnected:', socket.id);
   }
-  
+
   sendEventUpdate(eventName: string, message: string): void {
     this.server.emit(eventName, message);
   }
-
 }

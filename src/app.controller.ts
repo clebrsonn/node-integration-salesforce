@@ -18,7 +18,7 @@ export class AppController {
 
   @Get()
   @Render('index')
-  async getHello() {
+  async getIndex() {
     const jobs = await this.jobsService.findAll();
     return { jobs };
   }

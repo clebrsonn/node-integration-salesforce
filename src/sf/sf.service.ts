@@ -38,7 +38,7 @@ export class SfService {
   }
 
   cancelDeploy = async (params: Job) => {
-    let id = params.jobId;
+    const id = params.jobId;
 
     const instanceUrl = params.instanceURL;
 
