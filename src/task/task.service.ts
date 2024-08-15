@@ -12,7 +12,7 @@ export class TasksService {
   constructor(
     private readonly jobsService: JobsService,
     private readonly sfService: SfService,
-    private readonly gitlabService: GitlabService,
+   // private readonly gitlabService: GitlabService,
   ) {}
 
   @Cron('*/3 * * * *')
