@@ -26,16 +26,16 @@ export class TasksService {
       .then((jobs) => jobs?.forEach((j) => this.sfService.deployAndMonitor(j)));
   }
 
-  @Cron('*/3 * * * *')
-  handleJobs() {
-    this.jobsService
-      .find({
-        where: {
-          isMerged: false,
-        },
-      })
-      .then((jobs) =>
+  //@Cron('*/3 * * * *')
+  //handleJobs() {
+  //  this.jobsService
+  //    .find({
+  //      where: {
+  //        isMerged: false,
+  //      },
+  //    })
+  //    .then((jobs) =>
         //jobs?.forEach((j) => this.gitlabService.verifyIsMerged(j)),
-      );
-  }
+  //    );
+  //}
 }
