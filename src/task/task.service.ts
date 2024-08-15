@@ -35,7 +35,7 @@ export class TasksService {
         },
       })
       .then((jobs) =>
-        jobs?.forEach((j) => this.gitlabService.verifyIsMerged(j)),
+        //jobs?.forEach((j) => this.gitlabService.verifyIsMerged(j)),
       );
   }
 }
