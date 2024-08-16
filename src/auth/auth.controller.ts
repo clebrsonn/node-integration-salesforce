@@ -6,15 +6,12 @@ import {
   HttpStatus,
   Post,
   Res,
-  UseFilters,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { ApiTags } from '@nestjs/swagger';
-import { AuthExceptionFilter } from 'src/auth-exception/auth-exception.filter';
 
 @ApiTags('auth')
 @Controller('auth')
-@UseFilters(AuthExceptionFilter)
 export class AuthController {
   constructor(private authService: AuthService) {}
 
@@ -28,6 +25,7 @@ export class AuthController {
       signInDto.username,
       signInDto.password,
     );
+    res.sess
     res.cookie('user_token', token.access_token);
     res.redirect('/');
 

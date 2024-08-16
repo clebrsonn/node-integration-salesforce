@@ -13,7 +13,6 @@ import { GitlabModule } from 'src/gitlab/gitlab.module';
     forwardRef(() => SfModule),
     forwardRef(() => GitlabModule),
     SocketModule,
-
   ],
   controllers: [JobsController],
   providers: [JobsService],

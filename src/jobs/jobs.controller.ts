@@ -62,8 +62,7 @@ export class JobsController {
   }
 
   @Get('goto/:jobId')
-  goto(@Param('jobId') jobId: string){
+  goto(@Param('jobId') jobId: string) {
     return this.jobsService.goto(jobId);
   }
-
 }
