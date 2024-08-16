@@ -20,7 +20,9 @@ export class TasksService {
     this.jobsService
       .find({
         where: {
-          status: Not(In(['Succeeded', 'Failed', 'Cancelled', 'Error'])),
+          status: Not(
+            In(['Succeeded', 'Failed', 'Cancelled', 'Error', 'Canceled']),
+          ),
         },
       })
       .then((jobs) => jobs?.forEach((j) => this.sfService.deployAndMonitor(j)));
@@ -35,7 +37,9 @@ export class TasksService {
         },
       })
       .then((jobs) =>
-        jobs?.forEach((j) => this.gitlabService.verifyIsMerged(j)),
+        jobs?.forEach((j) =>
+          this.gitlabService.getMrAddress(j.projectId, j.mrId),
+        ),
       );
   }
 }

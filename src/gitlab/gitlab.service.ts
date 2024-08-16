@@ -76,6 +76,7 @@ export class GitlabService {
     if (response.data.state != 'opened') {
       this.jobsService.changeMerged(mergeRequestId, projectId);
     }
-    return response;
+    console.log('response', response.data.web_url);
+    return response.data.web_url;
   };
 }

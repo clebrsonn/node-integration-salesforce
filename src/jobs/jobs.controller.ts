@@ -5,7 +5,6 @@ import {
   Body,
   Patch,
   Param,
-  Delete,
   UseGuards,
 } from '@nestjs/common';
 import { JobsService } from './jobs.service';
@@ -55,9 +54,16 @@ export class JobsController {
     return this.jobsService.changeMerged(mrId, projectId);
   }
 
-  //@UseGuards(LoginGuard)
+  @UseGuards(LoginGuard)
   @Post('cancel/:id')
   cancel(@Param('id') jobId: string) {
+    console.log('jobId', jobId);
     return this.jobsService.cancel(jobId);
   }
+
+  @Get('goto/:jobId')
+  goto(@Param('jobId') jobId: string){
+    return this.jobsService.goto(jobId);
+  }
+
 }

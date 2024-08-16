@@ -72,14 +72,13 @@
 
     function goTo(e) {
       let fetchData = {
-        method: 'POST',
-        body: JSON.stringify({ jobId: e }),
+        method: 'GET',
         headers: new Headers({
           'Content-Type': 'application/json; charset=UTF-8'
         })
       }
 
-      fetch('/goto', fetchData)
+      fetch(`/jobs/goto/${e}`, fetchData)
         .then((response) => {
           response.text().then(e =>
             window.open(e, '_blank'));

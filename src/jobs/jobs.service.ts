@@ -11,6 +11,7 @@ import { FindManyOptions, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { SfService } from 'src/sf/sf.service';
 import { SocketGateway } from 'src/socket/socket.gateway';
+import { GitlabService } from 'src/gitlab/gitlab.service';
 
 @Injectable()
 export class JobsService {
@@ -19,6 +20,8 @@ export class JobsService {
     @Inject(forwardRef(() => SfService))
     private readonly sfService: SfService,
     private readonly socketService: SocketGateway,
+    @Inject(forwardRef(() => GitlabService))
+    private readonly gitlabService: GitlabService,
   ) {}
 
   async create(createJobDto: CreateJobDto) {
@@ -74,5 +77,10 @@ export class JobsService {
       throw new NotFoundException();
     }
     this.sfService.cancelDeploy(job);
+  }
+
+  async goto(jobId: string) {
+    const job = await this.findOne(jobId);
+    return this.gitlabService.getMrAddress(job.projectId, job.mrId);
   }
 }

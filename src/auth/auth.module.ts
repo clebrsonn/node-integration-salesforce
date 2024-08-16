@@ -3,11 +3,11 @@ import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { UsersModule } from 'src/users/users.module';
 import { JwtModule } from '@nestjs/jwt';
-import { ConfigModule, ConfigService } from '@nestjs/config';
 import { SessionSerializer } from './session.serializer';
 import { PassportModule } from '@nestjs/passport';
 import { JwtStrategy } from './jwt.strategy';
 import { AuthConfigModule } from 'src/auth-config/auth-config.module';
+import { AuthConfig } from 'src/auth-config/auth-config';
 
 @Module({
   imports: [
@@ -15,12 +15,12 @@ import { AuthConfigModule } from 'src/auth-config/auth-config.module';
     AuthConfigModule,
 
     JwtModule.registerAsync({
-      imports: [ConfigModule, PassportModule],
-      useFactory: async (configService: ConfigService) => ({
-        secret: configService.get<string>('JWT_SECRET'),
+      imports: [AuthConfigModule, PassportModule],
+      useFactory: async (authConfig: AuthConfig) => ({
+        secret: authConfig.accessTokenConfig.secret,
       }),
       global: true,
-      inject: [ConfigService],
+      inject: [AuthConfig],
 
       //signOptions: { expiresIn: '60s' },
     }),
