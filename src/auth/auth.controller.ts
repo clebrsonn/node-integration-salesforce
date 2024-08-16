@@ -25,6 +25,7 @@ export class AuthController {
       signInDto.username,
       signInDto.password,
     );
+    res.sess
     res.cookie('user_token', token.access_token);
     res.redirect('/');
 
