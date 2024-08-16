@@ -2,7 +2,6 @@ import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { AuthService } from './auth.service';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { Request as RequestType } from 'express';
 import { AuthConfig } from 'src/auth-config/auth-config';
 
 @Injectable()
@@ -22,7 +21,6 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   }
 
   private static extractJWT(req: any): string | null {
-
     if (
       req.cookie &&
       'user_token' in req.cookie &&

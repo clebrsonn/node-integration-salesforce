@@ -41,7 +41,6 @@ export class SfService {
     const id = params.jobId;
 
     const instanceUrl = params.instanceURL;
-
     const response = await firstValueFrom(
       this.httpService
         .patch(

@@ -8,10 +8,12 @@ import * as exphbs from 'express-handlebars';
 import * as session from 'express-session';
 import * as passport from 'passport';
 import flash = require('connect-flash');
+import { AuthExceptionFilter } from './auth-exception/auth-exception.filter';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
   app.useGlobalPipes(new ValidationPipe());
+  app.useGlobalFilters(new AuthExceptionFilter());
 
   const config = new DocumentBuilder()
     .setTitle('Integration with Salesforce')
@@ -29,7 +31,7 @@ async function bootstrap() {
       extname: 'hbs',
       defaultLayout: 'main',
       layoutsDir: join(__dirname, '..', 'views', 'layouts'),
-      partialsDir: join(__dirname, '..', 'views', 'layouts'),
+      partialsDir: join(__dirname, '..', 'views'),
       helpers: {
         statusClass: function (status: string) {
           switch (status) {
@@ -48,7 +50,7 @@ async function bootstrap() {
   );
 
   app.useStaticAssets(join(__dirname, '..', 'public'));
-  // app.setBaseViewsDir(join(__dirname, '..', 'views'));
+
   app.setViewEngine('hbs');
 
   app.use(
