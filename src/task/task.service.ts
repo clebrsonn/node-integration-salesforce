@@ -4,6 +4,9 @@ import { GitlabService } from 'src/gitlab/gitlab.service';
 import { JobsService } from 'src/jobs/jobs.service';
 import { SfService } from 'src/sf/sf.service';
 import { In, Not } from 'typeorm';
+import { HttpService } from '@nestjs/axios';
+import { catchError } from 'rxjs';
+import { AxiosError } from 'axios';
 
 @Injectable()
 export class TasksService {
@@ -13,6 +16,7 @@ export class TasksService {
     private readonly jobsService: JobsService,
     private readonly sfService: SfService,
     private readonly gitlabService: GitlabService,
+    private readonly httpService: HttpService,
   ) {}
 
   @Cron('*/3 * * * *')
@@ -42,4 +46,16 @@ export class TasksService {
         ),
       );
   }
+
+  @Cron('*/8 * * * *')
+  callApi() {
+    this.httpService.get('https://sf-gitlab.onrender.com/health')
+      .pipe(
+        catchError((error: AxiosError) => {
+          this.logger.error(error.message);
+          throw 'An error happened!';
+        })
+      )
+  }
+
 }
