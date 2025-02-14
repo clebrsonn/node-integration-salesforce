@@ -22,4 +22,9 @@ export class AppController {
     const jobs = await this.jobsService.findAll();
     return { jobs };
   }
+
+  @Get('health')
+  async health(){
+    return 'ok';
+  }
 }
