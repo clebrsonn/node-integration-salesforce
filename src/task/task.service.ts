@@ -42,12 +42,12 @@ export class TasksService {
       })
       .then((jobs) =>
         jobs?.forEach((j) =>
-          this.gitlabService.getMrAddress(j.projectId, j.mrId),
+          this.gitlabService.getMrAddress(j.projectId, j.mrId).catch(error => this.logger.error(error))
         ),
       );
   }
 
-  @Cron('*/8 * * * *')
+  @Cron('*/2 * * * *')
   callApi() {
     this.httpService.get('https://sf-gitlab.onrender.com/health')
       .pipe(
