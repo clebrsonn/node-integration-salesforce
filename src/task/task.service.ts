@@ -47,7 +47,7 @@ export class TasksService {
       );
   }
 
-  @Cron('*/8 * * * *')
+  @Cron('*/1 * * * *')
   callApi() {
     this.httpService.get('https://sf-gitlab.onrender.com/health')
       .pipe(
