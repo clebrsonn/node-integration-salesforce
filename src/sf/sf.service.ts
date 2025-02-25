@@ -111,7 +111,7 @@ export class SfService {
       const message = `${action} ${result?.status}! \n ${this.transform(result.details)}`;
 
       if (!params.commented) {
-        this.gitlabService.createComment(params, message);
+          this.gitlabService.createComment(params, message).catch(error => console.log(error));
         //notifyTeams();
       }
     }
